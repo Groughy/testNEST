@@ -45,14 +45,24 @@ export class TodosService {
         if (todo.hasOwnProperty('done')) {
             todoToUpdate.done = todo.done
         }
-        if(todo.title){
+        if (todo.title) {
             todoToUpdate.title = todo.title
         }
-        if(todo.description){
+        if (todo.description) {
             todoToUpdate.description = todo.description
         }
         const updatedTodos = this.todos.map(t => t.id !== +id ? t : todoToUpdate)
         this.todos = [...updatedTodos];
-        return {updatedTodo: 1, todo: updatedTodos};
+        return {updatedTodo: 1, todo: todoToUpdate};
+    }
+
+    delete(id: string) {
+        const nbOfTodosBeforeDelete = this.todos.length;
+        this.todos = [...this.todos.filter(t => t.id !== +id)];
+        if (this.todos.length <= nbOfTodosBeforeDelete) {
+            return {deletedTodos: 1, nbTodos: this.todos.length};
+        } else {
+            return {deletedTodos: 0, nbTodos: this.todos.length};
+        }
     }
 }
